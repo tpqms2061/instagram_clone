@@ -49,7 +49,7 @@ public class User implements UserDetails {
     private String profileImageUrl;
 
     @Enumerated(EnumType.STRING)
-    private AuthProvider authProvider;
+    private AuthProvider provider;
 
     private String ProviderId;
 
