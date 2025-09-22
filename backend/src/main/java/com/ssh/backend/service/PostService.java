@@ -57,4 +57,18 @@ public class PostService {
         post = postRepository.save(post);
         return PostResponse.fromEntity(post);
     }
+
+    //삭제 - >인증 확인후 삭제되지않은 post 조회 / 예외처리 -> id와 인증된 id 비교 / 예외처리 -> 삭제 후 저장
+    public void deletePost(Long postId) {
+        User currentUser = authenticationService.getCurrentUser();
+        Post post = postRepository.findByIdAndNotDeleted(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+
+        if (!post.getUser().getId().equals(currentUser.getId())) {
+            throw new UnauthorizedException("You are not authorized to update this post");
+        }
+
+        post.setDeleted(true);
+        postRepository.save(post);
+    }
 }

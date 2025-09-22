@@ -1,15 +1,34 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
 import Signup from "./pages/signup";
+import Login from "./pages/login";
+import useAuthStore from "./store/authStore";
+import OAuth2Callback from "./pages/OAuth2Callback";
 
-// store는 zustand 에 대한 내용
 const App = () => {
+  const { isAuthenticated } = useAuthStore();
+
+  console.log(isAuthenticated);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/signup"
+          element={isAuthenticated ? <Navigate to="/" /> : <Signup />}
+        />
+        <Route path="/oauth2/callback" element={<OAuth2Callback />} />
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? <Home /> : <Navigate to="/login" replace />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
