@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-orange-400">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-grange-400">
       <div className="max-w-[420px] space-y-6 my-12">
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl px-12 py-14">
           <h1 className="text-center mb-6">

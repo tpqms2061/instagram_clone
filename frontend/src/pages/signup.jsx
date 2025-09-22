@@ -18,11 +18,9 @@ const Signup = () => {
     password: "",
   });
 
-  // 폼제출
   const handleSubmit = async (e) => {
-    e.preventDefault(); //새로고침 막기
+    e.preventDefault();
     try {
-      //회원가입 요청 -> 모든페이지에서 토큰을 알아야됨
       await register(formData);
       navigate("/");
     } catch (err) {
@@ -30,7 +28,6 @@ const Signup = () => {
     }
   };
 
-  // 숫자입력
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -45,7 +42,7 @@ const Signup = () => {
     formData.password;
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-orange-400">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-grange-400">
       <div className="max-w-[420px] space-y-6 my-12">
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl px-12 py-14">
           <h1 className="text-center mb-6">
@@ -54,7 +51,7 @@ const Signup = () => {
             </span>
           </h1>
 
-          <p className="text-center text-gray-600 font-medium mb-10 text-base">
+          <p className="text-center text-gray-600 font-medium mb-10">
             Sign up to see photos and videos from your friends.
           </p>
 
@@ -83,13 +80,15 @@ const Signup = () => {
               onChange={handleChange}
               required
             />
+
             <Input
               name="fullName"
-              placeholder="Full name"
+              placeholder="Full Name"
               value={formData.fullName}
               onChange={handleChange}
               required
             />
+
             <Input
               name="username"
               placeholder="Username"
@@ -97,6 +96,7 @@ const Signup = () => {
               onChange={handleChange}
               required
             />
+
             <Input
               type="password"
               name="password"
@@ -148,14 +148,15 @@ const Signup = () => {
             Have an account?{" "}
             <Link
               to="/login"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-semibold hover:from-purple-700 hover:to-pink-700 transition-all"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-semibold hover:from-purple-700 hover:to-pink-700 transition-all "
             >
               Log in
             </Link>
           </p>
         </div>
+
         <div className="text-center mt-8">
-          <p className="mb-5 text-white/90 font-semibold">Get the app.</p>
+          <p className="mb-5 text-white/90 font-medium">Get the app.</p>
           <div className="flex justify-center space-x-4">
             <img
               src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png"

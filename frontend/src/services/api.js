@@ -2,8 +2,6 @@ import axios from "axios";
 import StorageService from "./storage";
 import { TbError404 } from "react-icons/tb";
 
-//서비스는 axios 에 관한 내용
-
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 const api = axios.create({

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useAuthStore from "../store/authStore";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../components/common/Avatar";
-import usePostStore from "../store/postStore";
 import PostList from "../components/post/PostList";
 import CreatePost from "../components/post/CreatePost";
 
@@ -10,7 +9,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { user, logout } = useAuthStore();
-  const { posts, fetchPosts } = usePostStore();
 
   const [activeTab, setActiveTab] = useState("home");
   const [showCreatePost, setShowCreatePost] = useState(false);
@@ -19,16 +17,6 @@ const Home = () => {
     logout();
     navigate("/login");
   };
-
-  const loadPosts = async () => {
-    fetchPosts();
-  };
-
-  useEffect(() => {
-    loadPosts();
-  }, []);
-
-  useEffect(() => console.log(posts), [posts]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center">
@@ -183,7 +171,7 @@ const Home = () => {
         </nav>
 
         {showCreatePost && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <CreatePost onClose={() => setShowCreatePost(false)} />
           </div>
         )}

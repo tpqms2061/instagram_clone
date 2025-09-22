@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import Avatar from "../common/Avatar";
+import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 
-const PostCard = () => {
+const PostCard = ({ post }) => {
   return (
     <div className="bg-white rounded-lg shadow-md">
-      <div className="bg-white rounded-lg shadow-md">
+      <div className="flex items-center justify-between p-4">
         <Link
           to={`/profile/${post.user.username}`}
           className="flex items-center space-x-3"
@@ -18,7 +19,7 @@ const PostCard = () => {
       </div>
 
       <div className="px-4 pb-2 pt-3">
-        <p className="test-sm whitespace-pre-wrap break-words">
+        <p className="text-sm whitespace-pre-wrap break-words">
           {post.content}
         </p>
       </div>
