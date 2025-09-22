@@ -18,9 +18,11 @@ const Signup = () => {
     password: "",
   });
 
+  // 폼제출
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //새로고침 막기
     try {
+      //회원가입 요청 -> 모든페이지에서 토큰을 알아야됨
       await register(formData);
       navigate("/");
     } catch (err) {
@@ -28,6 +30,7 @@ const Signup = () => {
     }
   };
 
+  // 숫자입력
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { authService } from "../services/auth";
 
+// 인증 관련된 스토어
 const useAuthStore = create((set) => ({
   user: authService.getCurrentUser(),
   isAuthenticated: authService.isAuthenticated(),
@@ -28,6 +29,8 @@ const useAuthStore = create((set) => ({
   register: async (userData) => {
     set({ loading: true, error: null });
     try {
+      // 서버로 부터 데이터 요청 & 응답
+      //set 에 반영
       const data = await authService.register(userData);
       set({
         user: data.user,
