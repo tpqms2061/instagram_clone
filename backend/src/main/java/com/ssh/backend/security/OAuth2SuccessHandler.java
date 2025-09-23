@@ -34,21 +34,25 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     ) throws IOException, ServiceException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
+        //구글
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String avatarUrl = oAuth2User.getAttribute("picture");
 
-        // email 만들어주기
+        // 깃허브는 이메일이 없을수도있어 없으면 그에 대한 고유성 보장하는 "@github.local처리
         if (email == null && oAuth2User.getAttribute("login") != null) {
             email = oAuth2User.getAttribute("login") + "@github.local";
             avatarUrl = oAuth2User.getAttribute("avatar_url");
         }
 
+        //final -> 확정을 짓는것
         final String finalEmail = email;
         final String finalName = name != null ? name : "User";
         final String finalAvatarUrl = avatarUrl;
 
+        //가입이 되어있으면 기존정보 가져오거나
         User user = userRepository.findByEmail(finalEmail)
+        //안되어있으면 가입하는 것
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setEmail(finalEmail);
@@ -69,6 +73,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
 
+        //토큰 생성
         String accessToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
@@ -90,7 +95,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             username = baseUsername + counter;
             counter++;
         }
-
+//counter를 붙임으로써 고유성 보장
         return username;
     }
 }

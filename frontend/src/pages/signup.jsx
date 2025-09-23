@@ -9,7 +9,7 @@ import useAuthStore from "../store/authStore";
 const Signup = () => {
   const navigate = useNavigate(); // 페이지간에 이동을 시켜주는 기능 => 함수형 훅
 
-  const { register } = useAuthStore();
+  const { register, loading, error } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -34,6 +34,13 @@ const Signup = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  //다 있어야 유효
+  const isFormValid =
+    formData.email &&
+    formData.fullName &&
+    formData.username &&
+    formData.password;
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-grange-400">
@@ -127,10 +134,14 @@ const Signup = () => {
               .{" "}
             </p>
 
-            <Button type="submit">Sign up</Button>
+            <Button type="submit" disabled={loading || !isFormValid}>
+              {loading ? " Signing up ..." : "Sign up"}
+            </Button>
           </form>
 
-          {/* <p className="text-red-500 text-xs text-center mt-4">error</p> */}
+          {error && (
+            <p className="text-red-500 text-xs text-center mt-4">error</p>
+          )}
         </div>
 
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl px-12 py-8 text-center">

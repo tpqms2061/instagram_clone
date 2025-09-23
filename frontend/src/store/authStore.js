@@ -1,18 +1,16 @@
 import { create } from "zustand";
-import { authService } from "../service/auth";
+import { authService } from "../services/auth";
 
 const useAuthStore = create((set) => ({
   user: "",
-  isAuthenticated: "",
+  isAuthenticated: authService.isAuthenticated(),
   loading: false,
   error: null,
 
   login: async (userData) => {
     set({ loading: true, error: null });
     try {
-      // 로그인 요청
       const data = await authService.login(userData);
-      // 상태반영
       set({
         user: data.user,
         isAuthenticated: true,
@@ -30,9 +28,7 @@ const useAuthStore = create((set) => ({
   register: async (userData) => {
     set({ loading: true, error: null });
     try {
-      //서버로부터 데이터 요청 & 응답
       const data = await authService.register(userData);
-      //set 에 반영
       set({
         user: data.user,
         isAuthenticated: true,
@@ -46,6 +42,15 @@ const useAuthStore = create((set) => ({
       });
       throw err;
     }
+  },
+
+  logout: () => {
+    authService.logout();
+    set({
+      user: null,
+      isAuthenticated: false,
+      error: null,
+    });
   },
 }));
 
