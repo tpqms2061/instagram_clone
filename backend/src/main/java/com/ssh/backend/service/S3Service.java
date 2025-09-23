@@ -76,6 +76,7 @@ public class S3Service {
 
             );*/
             ImageIO.write(resizedImage, "jpg", outputStream);
+            PutObjectRequest putObjectRequest = getPutObjectRequest(file, outputStream, fileName);
 
             // === (3) 업로드 실행 ===
             // AmazonS3Client(s3client)가 AWS S3에 업로드 요청을 보냄
