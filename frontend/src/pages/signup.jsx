@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
@@ -7,9 +7,7 @@ import Input from "../components/ui/Input";
 import useAuthStore from "../store/authStore";
 
 const Signup = () => {
-  const navigate = useNavigate();
-
-  const { register, loading, error } = useAuthStore();
+  const { register } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -22,7 +20,6 @@ const Signup = () => {
     e.preventDefault();
     try {
       await register(formData);
-      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -34,12 +31,6 @@ const Signup = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  const isFormValid =
-    formData.email &&
-    formData.fullName &&
-    formData.username &&
-    formData.password;
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-purple-400 via-pink-500 to-grange-400">
@@ -133,14 +124,10 @@ const Signup = () => {
               .{" "}
             </p>
 
-            <Button type="submit" disabled={loading || !isFormValid}>
-              {loading ? "Signing up..." : "Sign up"}
-            </Button>
+            <Button type="submit">Sign up</Button>
           </form>
 
-          {error && (
-            <p className="text-red-500 text-xs text-center mt-4">{error}</p>
-          )}
+          {/* <p className="text-red-500 text-xs text-center mt-4">error</p> */}
         </div>
 
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl px-12 py-8 text-center">
