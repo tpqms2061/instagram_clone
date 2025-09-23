@@ -26,6 +26,7 @@ public class PostService {
         User currentUser = authenticationService.getCurrentUser();
         Post post = Post.builder()
                 .content(request.getContent())
+                .imageUrl(request.getImageUrl())
                 .user(currentUser)
                 .deleted(false)
                 .build();
