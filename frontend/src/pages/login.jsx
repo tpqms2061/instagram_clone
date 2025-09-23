@@ -6,22 +6,29 @@ import { FaGithub } from "react-icons/fa";
 import Input from "../components/ui/Input";
 import useAuthStore from "../store/authStore";
 
-const Signup = () => {
-  const navigate = useNavigate(); // 페이지간에 이동을 시켜주는 기능 => 함수형 훅
+const Login = () => {
+  const navigate = useNavigate();
 
-  const { register } = useAuthStore();
+  const { login, loading, error } = useAuthStore();
 
   const [formData, setFormData] = useState({
-    email: "",
-    fullName: "",
-    username: "",
+    emailOrUsername: "",
     password: "",
   });
+
+  const isEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await register(formData);
+      const loginData = isEmail(formData.emailOrUsername)
+        ? { email: formData.emailOrUsername, password: formData.password }
+        : { username: formData.emailOrUsername, password: formData.password };
+
+      await login(loginData);
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -45,48 +52,12 @@ const Signup = () => {
             </span>
           </h1>
 
-          <p className="text-center text-gray-600 font-medium mb-10">
-            Sign up to see photos and videos from your friends.
-          </p>
-
-          <div className="space-y-4 mb-8">
-            <Button variant="secondary" icon={<FcGoogle className="w-6 h-6" />}>
-              Continue with Google
-            </Button>
-
-            <Button variant="secondary" icon={<FaGithub className="w-6 h-6" />}>
-              Continue with GitHub
-            </Button>
-          </div>
-
-          <div className="flex items-center mb-8">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-            <span className="px-4 text-gray-500 text-sm font-medium">OR</span>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
-          </div>
-
           <form className="space-y-4" onSubmit={handleSubmit}>
             <Input
-              type="email"
-              name="email"
-              placeholder="Email address"
+              type="text"
+              name="emailOrUsername"
+              placeholder="Email address or Username"
               value={formData.email}
-              onChange={handleChange}
-              required
-            />
-
-            <Input
-              name="fullName"
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-            />
-
-            <Input
-              name="username"
-              placeholder="Username"
-              value={formData.username}
               onChange={handleChange}
               required
             />
@@ -100,47 +71,38 @@ const Signup = () => {
               required
             />
 
-            <p className="text-sm text-gray-500 text-center my-6 leading-relaxed">
-              People who use our service may have uploaded your contact
-              information to Instagram{" "}
-              <a
-                href="#"
-                className="text-pink-500 hover:text-pink-600 transition-colors"
-              >
-                Learn More
-              </a>
-            </p>
-
-            <p className="text-sm text-gray-500 text-center my-6 leading-relaxed">
-              By signing up, you agree to our{" "}
-              <a className="text-pink-500 hover:text-pink-600 transition-colors">
-                Terms
-              </a>
-              ,{" "}
-              <a className="text-pink-500 hover:text-pink-600 transition-colors">
-                Privacy Policy
-              </a>{" "}
-              and{" "}
-              <a className="text-pink-500 hover:text-pink-600 transition-colors">
-                Cookie Policy
-              </a>
-              .{" "}
-            </p>
-
-            <Button type="submit">Sign up</Button>
+            <Button className="mt-4" type="submit">
+              Sign up
+            </Button>
           </form>
 
           {/* <p className="text-red-500 text-xs text-center mt-4">error</p> */}
+
+          <div className="flex items-center my-8">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+            <span className="px-4 text-gray-500 text-sm font-medium">OR</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+          </div>
+
+          <div className="space-y-4 mb-8">
+            <Button variant="secondary" icon={<FcGoogle className="w-6 h-6" />}>
+              Continue with Google
+            </Button>
+
+            <Button variant="secondary" icon={<FaGithub className="w-6 h-6" />}>
+              Continue with GitHub
+            </Button>
+          </div>
         </div>
 
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl px-12 py-8 text-center">
           <p className="text-gray-600">
-            Have an account?{" "}
+            Don't have an account?{" "}
             <Link
-              to="/login"
+              to="/signup"
               className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-semibold hover:from-purple-700 hover:to-pink-700 transition-all "
             >
-              Log in
+              Sign up
             </Link>
           </p>
         </div>
@@ -165,4 +127,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;

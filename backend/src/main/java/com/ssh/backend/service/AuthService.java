@@ -65,6 +65,7 @@ public class AuthService {
                 .build();
     }
 
+    //로그인 서비스
     public AuthResponse authenticate(AuthRequest request) {
         try {
             log.info(" auth service : " , request);
@@ -81,8 +82,10 @@ public class AuthService {
                     .or(() -> userRepository.findByUsername(loginId))
                     .orElseThrow(() -> new AuthenticationException("Authentication failed"));
 
+            //유저 정보가 있으면 토크을 만듬
             String jwtToken = jwtService.generateToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
+
 
             return AuthResponse.builder()
                     .accessToken(jwtToken)
@@ -91,7 +94,7 @@ public class AuthService {
                     .build();
 
         } catch (BadRequestException e) {
-            throw new AuthenticationException("Invalid email or password");
+            throw new AuthenticationException("Invalid email or password"); //너무 정확하게 알려줄 필요없이 뭉뚱그려 알려줘야 해킹당할 위험 x
         }
     }
 }
