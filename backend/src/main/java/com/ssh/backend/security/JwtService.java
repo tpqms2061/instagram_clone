@@ -125,7 +125,7 @@ public class JwtService {
                 .parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
-                .parseClaimsJws(token) // JWs로 해야 검증
+                .parseClaimsJws(token) // JWs로 해야 검증 => Jwt 로 하면 안됨.
                 .getBody();
     }
 
