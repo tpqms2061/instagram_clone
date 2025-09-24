@@ -7,7 +7,10 @@ import com.ssh.backend.entity.User;
 import com.ssh.backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -28,18 +31,20 @@ public class PostService {
 
         post = postRepository.save(post);
         return PostResponse.fromEntity(post);
+    }
 
+    @Transactional(readOnly = true)
+    public Page<PostResponse> getAllPosts(Pageable pageable) {
+        User currentUser = authenticationService.getCurrentUser();
+        Page<Post> posts = postRepository.findAllActive(pageable);
+        return posts.map(PostResponse::fromEntity); //  원칙적으로는  PostResponse.fromEntity로 반환하지만 다수일 경우에는 map함수로 반환
+
+//        return posts.map(post -> PostResponse.fromEntity(post));
     }
 
 
 
 
-//    @Transactional(readOnly = true)
-//    public Page<PostResponse> getAllPosts(Pageable pageable) {
-//        authenticationService.getCurrentUser();
-//        Page<Post> posts = postRepository.findAllActive(pageable);
-//        return posts.map(PostResponse::fromEntity);
-//    }
 
 //    public PostResponse updatePost(Long postId, PostRequest request) {
 //

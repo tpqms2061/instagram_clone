@@ -6,6 +6,9 @@ import com.ssh.backend.service.PostService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +26,15 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
-
-//    @GetMapping
-//    public ResponseEntity<Page<PostResponse>> getAllPost(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "1") int size
-//    ) {
-//        Pageable pageable = PageRequest.of(page,size);
-//        Page<PostResponse> posts = postService.getAllPosts(pageable);
-//        return ResponseEntity.ok(posts);
-//    }
+    @GetMapping
+    public ResponseEntity<Page<PostResponse>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostResponse> posts = postService.getAllPosts(pageable);
+        return ResponseEntity.ok(posts);
+    }
 //
 //    @PutMapping("/{postId}")
 //    public ResponseEntity<PostResponse> updatePost(

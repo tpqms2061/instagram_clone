@@ -2,7 +2,6 @@ package com.ssh.backend.repository;
 
 import com.ssh.backend.entity.Post;
 import com.ssh.backend.entity.User;
-import jakarta.persistence.Entity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

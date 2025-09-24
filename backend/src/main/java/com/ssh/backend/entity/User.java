@@ -77,4 +77,8 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() { return enabled; }
+
+   /* @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Like> likes = new HashSet<>();*/
 }
