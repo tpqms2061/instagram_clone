@@ -17,15 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-// =========================
-// User 엔티티 클래스
-// Spring Security의 UserDetails를 구현하여
-// 인증/인가에서 사용 가능
-// =========================
 @Entity
 @Table(name = "users", indexes = {
-        @Index(name = "idx_username", columnList = "username"), // username 인덱스 생성
-        @Index(name = "idx_email", columnList = "email")        // email 인덱스 생성
+        @Index(name = "idx_username", columnList = "username"),
+        @Index(name = "idx_email", columnList = "email")
 })
 @Data
 @Builder
@@ -53,11 +48,9 @@ public class User implements UserDetails {
     @Column(name = "profile_image_url", columnDefinition = "TEXT")
     private String profileImageUrl;
 
-    // 소셜 로그인 제공자 (예: GOOGLE, GITHUB 등)
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
-    // 소셜 제공자에서 받은 고유 ID
     private String providerId;
 
     @CreationTimestamp
@@ -68,30 +61,20 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // 계정 활성화 여부
     private boolean enabled;
-
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @Builder.Default
-    private Set<Post> posts = new HashSet<>();
+    private Set<Post> posts = new HashSet<>(); //중복 문제 해결
 
-    // 엔티티 저장 전 실행되는 메서드
-    // 기본적으로 계정을 활성화(true) 상태로 생성
     @PrePersist
     protected void onCreate() { enabled = true; }
 
-    // =========================
-    // UserDetails 인터페이스 구현
-    // =========================
-
-    // 사용자 권한(ROLE) 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    // 계정 활성화 여부 반환
     @Override
     public boolean isEnabled() { return enabled; }
 }

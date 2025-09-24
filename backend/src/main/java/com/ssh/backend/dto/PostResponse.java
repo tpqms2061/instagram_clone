@@ -1,6 +1,6 @@
 package com.ssh.backend.dto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssh.backend.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,15 +11,19 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class PostResponse {
+
     private Long id;
     private String content;
-    // private String imageUrl;
+    private String username;
+//    private String imageUrl;
+
     private UserDto user;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
     @JsonProperty("isOwner")
     private boolean isOwner;
 
@@ -32,4 +36,5 @@ public class PostResponse {
                 .updatedAt(post.getUpdatedAt())
                 .build();
     }
+
 }

@@ -5,11 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-// =========================
-// 회원가입 요청 DTO
-// 클라이언트 → 서버로 전달되는 가입 요청 데이터
-// 유효성 검증(@NotBlank, @Email, @Size) 적용
-// =========================
+
 @Data
 public class RegisterRequest {
     @NotBlank(message = "Username is required")

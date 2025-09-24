@@ -89,7 +89,7 @@ const Login = () => {
           </form>
 
           {error && (
-            <p className="text-red-500 text-xs text-center mt-4">{error}</p>
+            <p className="text-red-500 text-xs text-center mt-4">error</p>
           )}
 
           <div className="flex items-center my-8">
@@ -102,7 +102,7 @@ const Login = () => {
             <Button
               variant="secondary"
               icon={<FcGoogle className="w-6 h-6" />}
-              onClick={handleSocialLogin("google")}
+              onClick={() => handleSocialLogin("google")}
             >
               Continue with Google
             </Button>
@@ -110,7 +110,7 @@ const Login = () => {
             <Button
               variant="secondary"
               icon={<FaGithub className="w-6 h-6" />}
-              onClick={handleSocialLogin("github")}
+              onClick={() => handleSocialLogin("github")}
             >
               Continue with GitHub
             </Button>

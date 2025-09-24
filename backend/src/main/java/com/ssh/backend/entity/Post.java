@@ -11,12 +11,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "posts",
-        indexes = {
-                @Index(name = "idx_post_user_id", columnList = "user_id"),
-                @Index(name = "idx_post_created_at", columnList = "created_at"),
-                @Index(name = "idx_post_user_created_deleted", columnList = "user_id, created_at, is_deleted"),
-        })
+@Table(name = "posts" , indexes = {
+        @Index(name = "idx_post_user_id" , columnList = "user_id"),
+        @Index(name = "idx_post_created_at" , columnList = "created_at"),
+        @Index(name = "idx_post_user_created_deleted" , columnList = "user_id, created_at, is_deleted")
+})
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,14 +26,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT" , nullable = false)
     private String content;
 
-    @Column(name = "image_url" , columnDefinition = "TEXT")
-    private String imageUrl;
+//    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name="user_id" , nullable = false)
     private User user;
 
     @Column(name = "is_deleted")
@@ -42,10 +40,12 @@ public class Post {
     private boolean deleted = false;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name ="created_at" , updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+
 }

@@ -6,12 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// =========================
-// UserDto 클래스
-// 엔티티(User) → DTO 변환용
-// 클라이언트에 불필요한 정보(비밀번호 등)를
-// 노출하지 않도록 가공해서 반환
-// =========================
+
 @Data
 @Builder
 @NoArgsConstructor

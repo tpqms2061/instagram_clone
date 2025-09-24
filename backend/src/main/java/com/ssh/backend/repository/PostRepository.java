@@ -13,13 +13,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @EntityGraph(attributePaths = {"user"}) //조회개수가 많아지면 관련된 녀석들을 반복적으로 수행하는데 N+1 의문제인데
-//    entityGraph 를 사용하면 처음 조회할때 묶어서 가져옴
+
+    @EntityGraph(attributePaths = {"user"})
     @Query("SELECT p FROM Post p WHERE p.deleted = false ORDER BY p.createdAt DESC")
     Page<Post> findAllActive(Pageable pageable);
 
     //삭제되지않은 user로 조회
     @EntityGraph(attributePaths = {"user"})
+    //조회개수가 많아지면 관련된 녀석들을 반복적으로 수행하는데 N+1 의문제인데
+//    entityGraph 를 사용하면 처음 조회할때 묶어서 가져옴
     @Query("SELECT p FROM Post p WHERE p.user = :user AND p.deleted = false ORDER BY p.createdAt DESC")
     Page<Post> findByUserAndNotDeleted(@Param("user") User user, Pageable pageable);
       //삭제되지않은 userid로 조회
