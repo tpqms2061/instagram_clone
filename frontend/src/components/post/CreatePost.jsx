@@ -4,7 +4,7 @@ import { useState } from "react";
 import usePostStore from "../../store/PostStore";
 
 const CreatePost = ({ onClose }) => {
-  const { createPost, loading } = usePostStore;
+  const { createPost, loading, error } = usePostStore();
 
   const [content, setContent] = useState("");
 
@@ -25,7 +25,10 @@ const CreatePost = ({ onClose }) => {
       });
 
       setContent("");
-    } catch (err) {}
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -55,7 +58,7 @@ const CreatePost = ({ onClose }) => {
           </div>
         </div>
 
-        <div className="text-red-500 text-sm">error</div>
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         <div className="flex justify-end space-x-3">
           <button
@@ -68,8 +71,9 @@ const CreatePost = ({ onClose }) => {
           <button
             type="submit"
             className="px-6 py-2 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+            disabled={loading || !content.trim()}
           >
-            Post
+            {loading ? "Posting ..." : "Post"}
           </button>
         </div>
       </form>
