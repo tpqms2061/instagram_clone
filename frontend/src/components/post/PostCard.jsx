@@ -7,13 +7,14 @@ import { FiEdit2, FiMoreVertical, FiTrash } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 import usePostStore from "../../store/PostStore";
 import CreatePost from "./CreatePost";
-import { FaSliders } from "react-icons/fa6";
+import axios from "axios";
 
 const PostCard = ({ post }) => {
   const { user } = useAuthStore();
   const { deletePost } = usePostStore();
 
   const isOwner = post.user.id == user.id;
+  const [imageUrl, setImageUrl] = useState("");
 
   const menuRef = useRef(null);
 
@@ -46,6 +47,39 @@ const PostCard = ({ post }) => {
       };
     }
   }, [showMenu]);
+
+  //이미지 업로드 하면 보이게 하는 로직
+  useEffect(() => {
+    const getImage = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token || token === "undefined" || token === "null") {
+          throw new Error(
+            "No valid authenication token found. Please login again."
+          );
+        }
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/posts/image?url=${
+            post.imageUrl
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setImageUrl(response.data.imageUrl);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (!post.imageUrl) return;
+
+    getImage();
+  }, [post]);
 
   return (
     <>
@@ -93,6 +127,16 @@ const PostCard = ({ post }) => {
             </div>
           )}
         </div>
+
+        {imageUrl && (
+          <div className="w-full overflow-hidden">
+            <img
+              src={imageUrl}
+              alt="Post"
+              className="w-ful aspect-square object-cover"
+            />
+          </div>
+        )}
 
         <div className="px-4 pb-2 pt-3">
           <p className="text-sm whitespace-pre-wrap break-words">

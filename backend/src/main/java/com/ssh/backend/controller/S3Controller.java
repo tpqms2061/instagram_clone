@@ -21,10 +21,5 @@ public class S3Controller {
         return ResponseEntity.ok(Map.of("url", url));
     }
 
-    //Url 을 스트링으로 반환하니까 스트링으로 <String > 으로 받는것
-    @GetMapping("/presign")
-    public ResponseEntity<String> getPresignedUrl(@RequestParam String url) {
-        String presignedUrl = s3Service.generatePresignedUrl(url, 1);
-        return ResponseEntity.ok(presignedUrl);
-    }
+
 }

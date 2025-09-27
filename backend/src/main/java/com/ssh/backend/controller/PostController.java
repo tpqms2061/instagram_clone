@@ -5,6 +5,7 @@ import com.ssh.backend.dto.PostResponse;
 import com.ssh.backend.entity.User;
 import com.ssh.backend.service.PostService;
 
+import com.ssh.backend.service.S3Service;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,12 +15,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/posts")
 
 public class PostController {
     private final PostService postService;
+    private final S3Service s3Service;
+
+    private static final int EXPIRATION_MINUTES=60;
 
     @PostMapping
     public ResponseEntity<PostResponse> createdPost(@Valid @RequestBody PostRequest request) {
@@ -52,5 +58,11 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.noContent().build();
 
+    }
+    //Url 을 스트링으로 반환하니까 스트링으로 <String > 으로 받는것
+    @GetMapping("/image")
+    public ResponseEntity<Map<String,String>> getPresignedUrl(@RequestParam String url) {
+        String imageUrl = s3Service.generatePresignedUrl(url, EXPIRATION_MINUTES);
+        return ResponseEntity.ok(Map.of("imageUrl" ,imageUrl));
     }
 }
