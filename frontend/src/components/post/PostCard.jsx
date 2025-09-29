@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Avatar from "../common/Avatar";
+import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
-import { formatDistance, formatDistanceToNow } from "date-fns";
 import useAuthStore from "../../store/authStore";
 import { FiEdit2, FiMoreVertical, FiTrash } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
@@ -13,14 +13,13 @@ const PostCard = ({ post }) => {
   const { user } = useAuthStore();
   const { deletePost } = usePostStore();
 
-  const isOwner = post.user.id == user.id;
-  const [imageUrl, setImageUrl] = useState("");
-
   const menuRef = useRef(null);
 
-  const [showMenu, setShowMenu] = useState(false);
+  const isOwner = post.user.id == user.id;
 
-  const [showUpdatePost, setShowUpdatePost] = useState(false); //모달창을 열고닫고 해야될때 사용하는 useState
+  const [showMenu, setShowMenu] = useState(false);
+  const [showUpdatePost, setShowUpdatePost] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
@@ -40,6 +39,7 @@ const PostCard = ({ post }) => {
         setShowMenu(false);
       }
     };
+
     if (showMenu) {
       document.addEventListener("mousedown", handleClickOutSide);
       return () => {
@@ -48,7 +48,6 @@ const PostCard = ({ post }) => {
     }
   }, [showMenu]);
 
-  //이미지 업로드 하면 보이게 하는 로직
   useEffect(() => {
     const getImage = async () => {
       try {
@@ -95,19 +94,17 @@ const PostCard = ({ post }) => {
             </div>
           </Link>
 
-          {/* 더보기 디자인 */}
           {isOwner && (
             <div className="relative" ref={menuRef}>
               <button
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors "
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                 onClick={() => setShowMenu(!showMenu)}
               >
                 <FiMoreVertical size={20} />
               </button>
 
-              {/* //더보기 클릭시 나타나는 효과 */}
               {showMenu && (
-                <div className="absolute right-0 top-full mt-1 shadow-lg z-50 border border-gray-200">
+                <div className="absolute right-0 top-full mt-1 w-24 bg-white shadow-lg z-50 py-0.5 border border-gray-200">
                   <button
                     className="flex items-center space-x-1 px-2 py-1 hover:bg-gray-50 w-full text-left transition-colors text-sm"
                     onClick={() => setShowUpdatePost(true)}
@@ -147,7 +144,7 @@ const PostCard = ({ post }) => {
         <div className="px-4 pb-3 pt-2">
           <p className="text-xs text-gray-500">
             {formatDistanceToNow(new Date(post.createdAt), {
-              addSuffix: true, //전후 시간표시 사용할꺼냐 말꺼냐 옵션
+              addSuffix: true,
               locale: ko,
             })}
           </p>
