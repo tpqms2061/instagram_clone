@@ -67,6 +67,10 @@ public class User implements UserDetails {
     @Builder.Default
     private Set<Post> posts = new HashSet<>(); //중복 문제 해결
 
+     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Builder.Default
+    private Set<Like> likes = new HashSet<>();
+
     @PrePersist
     protected void onCreate() { enabled = true; }
 
@@ -78,7 +82,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() { return enabled; }
 
-   /* @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Like> likes = new HashSet<>();*/
+
 }
