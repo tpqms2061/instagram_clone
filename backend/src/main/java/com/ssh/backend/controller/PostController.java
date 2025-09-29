@@ -3,6 +3,7 @@ package com.ssh.backend.controller;
 import com.ssh.backend.dto.PostRequest;
 import com.ssh.backend.dto.PostResponse;
 import com.ssh.backend.entity.User;
+import com.ssh.backend.service.LikeService;
 import com.ssh.backend.service.PostService;
 
 import com.ssh.backend.service.S3Service;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class PostController {
     private final PostService postService;
     private final S3Service s3Service;
+    private final LikeService likeService;
 
     private static final int EXPIRATION_MINUTES=60;
 
@@ -65,4 +67,18 @@ public class PostController {
         String imageUrl = s3Service.generatePresignedUrl(url, EXPIRATION_MINUTES);
         return ResponseEntity.ok(Map.of("imageUrl" ,imageUrl));
     }
+
+    @PostMapping("{postId}/like")
+    public ResponseEntity<?> toggleLike(@PathVariable Long postId) {
+        boolean isLiked = likeService.toggleLike(postId);
+        Long likeCount = likeService.getLikeCount(postId);
+
+        return ResponseEntity.ok().body(Map.of(
+                "isLiked", isLiked,
+                "likeCount", likeCount)
+        );
+
+
+    }
+
 }
