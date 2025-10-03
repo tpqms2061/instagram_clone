@@ -2,10 +2,8 @@ package com.ssh.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssh.backend.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jdk.jfr.Frequency;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class PostResponse {
 
     private Long id;
@@ -23,9 +22,12 @@ public class PostResponse {
     private UserDto user;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private long likeCount;
+    private  boolean isLiked;
+    private Long commentCount;
 
-    @JsonProperty("isOwner")
-    private boolean isOwner;
+   /* @JsonProperty("isOwner") //백엔드와 겹쳐서 삭제
+    private boolean isOwner;*/
 
     public static PostResponse fromEntity(Post post) {
         return PostResponse.builder()

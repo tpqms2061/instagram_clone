@@ -1,8 +1,7 @@
 //상태 관리
 
 import { create } from "zustand";
-import api from "../services/api";
-import likeService from "../services/like";
+
 import postService from "../services/post";
 
 const useLikeStore = create((set, get) => ({

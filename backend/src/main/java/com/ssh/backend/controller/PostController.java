@@ -68,6 +68,7 @@ public class PostController {
         return ResponseEntity.ok(Map.of("imageUrl" ,imageUrl));
     }
 
+    //like 관련 컨트롤러
     @PostMapping("{postId}/like")
     public ResponseEntity<?> toggleLike(@PathVariable Long postId) {
         boolean isLiked = likeService.toggleLike(postId);

@@ -11,11 +11,12 @@ import {
   FiMoreVertical,
   FiTrash,
 } from "react-icons/fi";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import usePostStore from "../../store/PostStore";
 import CreatePost from "./CreatePost";
 import axios from "axios";
 import useLikeStore from "../../store/likeStore";
+import CommentSection from "../comment/CommentSection";
 
 const PostCard = ({ post }) => {
   const { user } = useAuthStore();
@@ -29,7 +30,10 @@ const PostCard = ({ post }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showUpdatePost, setShowUpdatePost] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-
+  const [isLiked, setIsLiked] = useState(post?.liked);
+  const [likeCount, setLikeCount] = useState(post?.likeCount);
+  const [showComments, setShowComments] = useState(false);
+  const [commentCount, setCommentCount] = useState(post?.commentCount);
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
       try {
@@ -46,7 +50,8 @@ const PostCard = ({ post }) => {
     try {
       const response = await toggleLike(post.id);
 
-      console.log(response);
+      setIsLiked(response.isLiked);
+      setLikeCount(response.likeCount);
     } catch (err) {
       console.error(err);
     }
@@ -154,26 +159,36 @@ const PostCard = ({ post }) => {
           </div>
         )}
 
-        <div className="px-4 pb-2 pt-3">
+        <div className="px-4 pt-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
-                className="flex  items-center space-x-1 transition-all duration-200 text-gray-700/50"
+                className={`flex items-center space-x-1 transition-all duration-200 ${
+                  isLiked
+                    ? "text-red-500"
+                    : "text-gray-700/50 hover:text-red-500"
+                }`}
                 onClick={handleLike}
               >
                 <FiHeart
                   size={20}
-                  className="transition-all duration-200 fill-current"
+                  className={`transition-all duration-200 ${
+                    isLiked && "fill-current"
+                  }`}
                 />
-                <span className="text-sm font-medium">000</span>
+                <span className="text-sm font-medium">{likeCount}</span>
               </button>
 
-              <button className="flex  items-center space-x-1 transition-colors  hover:text-blue-500">
+              <button
+                className="flex items-center space-x-1 transition-colors text-gray-700 hover:text-blue-500"
+                onClick={() => setShowComments(!showComments)}
+              >
                 <FiMessageCircle size={20} />
-                <span className="text-sm font-medium">000</span>
+                <span className="text-sm font-medium">{commentCount}</span>
               </button>
             </div>
-            <button className=" transition-all duration-200 text-gray-700 hover:text-gray-900 ">
+
+            <button className="transition-all duration-200 text-gray-700 hover:text-gray-900">
               <FiBookmark size={20} className="fill-current" />
             </button>
           </div>
@@ -184,6 +199,17 @@ const PostCard = ({ post }) => {
             {post.content}
           </p>
         </div>
+
+        {/* 포스트 아래에 댓글창이 깔도록 설정하기위한 위치 */}
+        {showComments && (
+          <div className="px-4">
+            <CommentSection
+              post={post}
+              commentCount={commentCount}
+              setCommentCount={setCommentCount}
+            />
+          </div>
+        )}
 
         <div className="px-4 pb-3 pt-2">
           <p className="text-xs text-gray-500">
