@@ -28,7 +28,7 @@ public class UserService{
 
     private UserResponse mapToUserResponse(User user) {
         User currentUser = authenticationService.getCurrentUser();
-        
+
         boolean isFollowing = false;
         if (!currentUser.getId().equals(user.getId())) {
             isFollowing = followRepository.existsByFollowerAndFollowing(currentUser, user);
